@@ -1,4 +1,37 @@
 {
   "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": true
+  "editor.guides.bracketPairs": true,
+  "cSpell.ignoreWords": [
+    "Deserunt",
+    "Officia",
+    "adipisicing",
+    "aliquam",
+    "amet",
+    "consectetur",
+    "corrupti",
+    "cupiditate",
+    "delectus",
+    "dolore",
+    "dolorum",
+    "ducimus",
+    "elit",
+    "enim",
+    "fuga",
+    "harum",
+    "laborum",
+    "magnam",
+    "molestiae",
+    "necessitatibus",
+    "nemo",
+    "numquam",
+    "obcaecati",
+    "praesentium",
+    "reiciendis",
+    "script",
+    "similique",
+    "temporibus",
+    "unde",
+    "voluptatum",
+    "vuex"
+  ]
 }

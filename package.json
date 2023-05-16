@@ -11,7 +11,10 @@
     "build": "quasar build"
   },
   "dependencies": {
+    "@clerk/clerk-js": "^4.39.1",
     "@quasar/extras": "^1.0.0",
+    "@vue/apollo-composable": "^4.0.0-beta.4",
+    "@vue/apollo-option": "^4.0.0-beta.4",
     "apollo-boost": "^0.4.9",
     "axios": "^1.4.0",
     "core-js": "^3.6.5",
@@ -24,7 +27,7 @@
   },
   "devDependencies": {
     "@quasar/app-webpack": "^3.0.0",
-    "vue-cli-plugin-apollo": "~0.22.2"
+    "vue-cli-plugin-apollo": "^0.20.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

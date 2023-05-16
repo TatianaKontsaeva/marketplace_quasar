@@ -4,9 +4,13 @@
   "cSpell.ignoreWords": [
     "Deserunt",
     "Officia",
+    "TOTALSUM",
     "adipisicing",
+    "adultbook",
     "aliquam",
     "amet",
+    "appolo",
+    "childbooks",
     "consectetur",
     "corrupti",
     "cupiditate",
@@ -18,6 +22,8 @@
     "enim",
     "fuga",
     "harum",
+    "hasura",
+    "inmemory",
     "laborum",
     "magnam",
     "molestiae",
@@ -33,5 +39,6 @@
     "unde",
     "voluptatum",
     "vuex"
-  ]
+  ],
+  "cSpell.words": ["quasarframework"]
 }

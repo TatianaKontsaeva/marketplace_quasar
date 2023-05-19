@@ -1,37 +1,20 @@
-import { createStore } from 'vuex'
-import * as getters from './getters'
-import * as actions from './actions'
-import * as mutations from './mutations'
+import { store } from 'quasar/wrappers'
+import { createPinia } from 'pinia'
 
-export const state = {
-  cart: [],
-  books: [],
-  booksFilter: [],
-  loadingCart: {},
-  loadingCatalog: {},
-  refetchCart: {},
-  quantityBooksCart: 0,
-}
+/*
+ * If not building with SSR mode, you can
+ * directly export the Store instantiation;
+ *
+ * The function below can be async too; either use
+ * async/await or return a Promise which resolves
+ * with the Store instance.
+ */
 
-const store = createStore({
-  state,
-  getters,
-  actions,
-  mutations
+export default store((/* { ssrContext } */) => {
+  const pinia = createPinia()
+
+  // You can add Pinia plugins here
+  // pinia.use(SomePiniaPlugin)
+
+  return pinia
 })
-
-if (module.hot) {
-  module.hot.accept([
-    './getters',
-    './actions',
-    './mutations'
-  ], () => {
-    store.hotUpdate({
-      getters: require('./getters'),
-      actions: require('./actions'),
-      mutations: require('./mutations')
-    })
-  })
-}
-
-export default store

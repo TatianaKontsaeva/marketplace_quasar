@@ -1,17 +1,25 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
+  <q-page class="flex flex-center q-pa-lg">
+    <h3>Магазин электронной техники фирмы Apple</h3>
+    <div class="flex no-wrap items-start">
+      <div><img
+        alt="apple devices"
+        src="../assets/img/main.webp"
+      ></div>
+    </div>
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+export default defineComponent({ })
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+
+
+ 
+
 </script>
+<style>
+
+
+</style>

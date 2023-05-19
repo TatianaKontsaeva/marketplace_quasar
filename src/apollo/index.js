@@ -3,7 +3,7 @@ import { setContext } from "@apollo/client/link/context";
 
 export function getClientOptions(options) {
   const httpLink = createHttpLink({
-    uri: "https://guided-dane-43.hasura.app/v1/graphql",
+    uri: "https://master-fox-84.hasura.app/v1/graphql",
   })
 
   const authLink = setContext((_, { headers }) => {

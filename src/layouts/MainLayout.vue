@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-gradient flex items-center justify-between">
+      <div>
       <q-toolbar>
         <q-btn
           flat
@@ -11,14 +12,32 @@
           @click="toggleLeftDrawer"
         />
       </q-toolbar>
-      <div class="q-px-lg q-pt-xl q-mb-xl">
-        <div class="text-h3">BookStore</div>
-        
-      </div>
       
-      <q-img 
-      class="header-image absolute-top bg-dimmed"
-      src="../assets/images/main.png"/>
+      <div class="q-px-lg q-pt-md q-mb-md">
+        <div class="text-h3">Apple Store</div>
+      </div>
+     </div>
+     <div>
+      <q-toolbar class="header__bottom">
+          <div class="bottom-header__container">
+            <div class="bottom-header__column">
+                <p class="bottom-header__text">Войти в личный кабинет</p>
+                <q-item id="auth-links">
+                    <q-btn 
+                    class="actions-header_login" 
+                    label="Login" 
+                    type="button"
+                    @click="login" />
+                </q-item>
+              <div class="q-ml-md">
+                <div id="user-button"></div>
+              </div>
+            </div>
+        </div>
+
+      </q-toolbar>
+    </div> 
+     
     </q-header>
     <q-drawer
         v-model="leftDrawerOpen"
@@ -27,31 +46,16 @@
         :breakpoint="600"
       >
       <q-list padding>
-        <q-toolbar class="header__bottom">
-          <div class="bottom-header__container">
-            <div class="bottom-header__column">
-              <ul class="bottom-header__actions actions-header">
-                <li>
-                  <div id="auth-links" class="auth-links">
-                    <button
-                      onclick="Clerk.openSignIn()"
-                      class="actions-header__item actions-header_login"
-                    >
-                      <span>Sign in</span>
-                    </button>
-                    <button
-                      onclick="Clerk.openSignUp()"
-                      class="actions-header__item actions-header_reg"
-                    >
-                      <span>Sign up</span>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-      </div>
-    </q-toolbar>
         <q-item to="/" exact clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+          <q-item-section>
+            Main Page
+          </q-item-section>
+        </q-item>
+       
+        <q-item to="/catalog" exact clickable v-ripple>
           <q-item-section avatar>
             <q-icon name="list_alt" />
           </q-item-section>
@@ -75,14 +79,7 @@
             About Us
           </q-item-section>
         </q-item>
-        <q-item to="/contacts" exact clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="contact_page" />
-          </q-item-section>
-          <q-item-section>
-            Contacts
-          </q-item-section>
-        </q-item>
+  
         <q-item to="/cart" exact clickable v-ripple>
           <q-item-section avatar>
             <q-icon name="shopping_basket" />
@@ -108,54 +105,35 @@
 <script>
 import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
-import Clerk from "@clerk/clerk-js";
+import { login, logout } from '../clerk/user'
 
 //import Clerk from "@clerk/clerk-js";
-const publishableKey = "pk_test_dWx0aW1hdGUtcHJpbWF0ZS01MS5jbGVyay5hY2NvdW50cy5kZXYk"
-
-const clerk = new Clerk(publishableKey);
-const startClerk = async () => {
-  const Clerk = window.Clerk;
-
-  try {
-    // Load Clerk environment and session if available
-    await Clerk.load();
-
-    const userButton = document.getElementById("user-button");
-    const authLinks = document.getElementById("auth-links");
-
-    Clerk.addListener(({ user }) => {
-      // Display links conditionally based on user state
-      authLinks.style.display = user ? "none" : "flex";
-    });
-
-    if (Clerk.user) {
-      // Mount user button component
-      Clerk.mountUserButton(userButton);
-      userButton.style.margin = "auto";
-
-      sessionStorage.setItem(
-        "token",
-        await Clerk.session?.getToken({ template: "hasura" })
-      );
-    }
-  } catch (err) {
-    console.error("Error starting Clerk: ", err);
-  }
-};
-
-(() => {
+const publishableKey =
+  "pk_test_bXV0dWFsLWd1bGwtNTIuY2xlcmsuYWNjb3VudHMuZGV2JA";
   const script = document.createElement("script");
-  script.setAttribute("data-clerk-publishable-key", publishableKey);
-  script.async = true;
-  script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js`;
-  script.crossOrigin = "anonymous";
-  script.addEventListener("load", startClerk);
-  script.addEventListener("error", () => {
-    document.getElementById("no-frontend-api-warning").hidden = false;
+script.setAttribute("data-clerk-publishable-key", publishableKey);
+script.async = true;
+script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js`;
+script.crossOrigin = "anonymous";
+script.addEventListener("load", async function () {
+  await window.Clerk.load();
+
+  const userButton = document.getElementById("user-button");
+  const authLinks = document.getElementById("auth-links");
+
+ Clerk.addListener(({ user }) => {
+    authLinks.style.display = user ? "none" : "flex";
   });
-  document.body.appendChild(script);
-})();
+
+  if (window.Clerk.user) {
+    window.Clerk.mountUserButton(userButton);
+    userButton.style.margin = "auto";
+
+    localStorage.setItem("session_id", window.Clerk.session.id);
+  }
+});
+document.body.appendChild(script);
+
 
 const linksList = [
   {
@@ -201,42 +179,37 @@ const linksList = [
     link: 'https://awesome.quasar.dev'
   }
 ]
+
 export default defineComponent({
   name: 'MainLayout',
+
   components: {
     EssentialLink
   },
+
   setup () {
     const leftDrawerOpen = ref(false)
 
-      return {
-        essentialLinks: linksList,
-        leftDrawerOpen,
-        toggleLeftDrawer () {
-          leftDrawerOpen.value = !leftDrawerOpen.value
-        }
-      }
-  },
-  
-  
-
-});
+    return {
+      essentialLinks: linksList,
+      leftDrawerOpen,
+      login,
+      logout,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      
+    }
+  }
+})
 </script>
 <style lang="scss">
-  .q-drawer__content {
-    background: $cherry-wine;
-    color: white
-  }
-  .header-image, .absolute-top {
-    height: 100%;
-    z-index: -1;
-    opacity: 1.1;
-  }
+.bg-gradient {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,27,121,1) 50%, rgba(57,0,255,1) 100%);
+}
   .q-item.q-router-link--active, .q-item--active {
-    color: #ce9866
-  }
-  .bottom-header__actions {
-    list-style: none;
+    color: #3900ff
   }
   .auth-links {
     display: flex;
@@ -244,29 +217,24 @@ export default defineComponent({
     row-gap: 10px;
   }
   .actions-header_login {
-    background: #cfc5ae;
-    border: 1px solid #cfc5ae;
+    background: #091b79;
+    border: 1px solid #091b79;
     border-radius: 5px;
     height: 30px;
     width: 150px;
+    color: white;
   }
-  .actions-header_reg {
-    background: #ce9866;
-    border: 1px solid #ce9866;
-    border-radius: 5px;
-    height: 30px;
-    width: 150px;
+   .bottom-header__text {
+    font-size: 18px;
+    color:white;
   }
   .actions-header_login:hover {
-    background: #ce9866;
-    border: 1px solid #ce9866;
+    background: white;
+    border: 1px solid #091b79;
     cursor: pointer;
     transition-duration: 100ms;
+    color: #091b79;
   }
-  .actions-header_reg:hover {
-    background: #cfc5ae;
-    border: 1px solid #ce9866;
-    cursor: pointer;
-    transition-duration: 100ms;
-  }
+  
+ 
 </style>

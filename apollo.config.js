@@ -5,7 +5,7 @@ module.exports = {
   client: {
     service: {
       name: 'my-service',
-      url: 'https://master-fox-84.hasura.app/v1/graphql',
+      url: 'https://fancy-hagfish-48.hasura.app/v1/graphql',
     },
     // Files processed by the extension
     includes: ['src/**/*.vue', 'src/**/*.js', 'src/**/*.ts'],

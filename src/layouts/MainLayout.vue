@@ -14,18 +14,17 @@
       </q-toolbar>
       
       <div class="q-px-lg q-pt-md q-mb-md">
-        <div class="text-h3">Apple Store</div>
+        <div class="text-h3">Apple Store </div>
       </div>
      </div>
      <div>
       <q-toolbar class="header__bottom">
           <div class="bottom-header__container">
             <div class="bottom-header__column">
-                <p class="bottom-header__text">Войти в личный кабинет</p>
                 <q-item id="auth-links">
                     <q-btn 
                     class="actions-header_login" 
-                    label="Login" 
+                    label="Войти" 
                     type="button"
                     @click="login" />
                 </q-item>
@@ -51,7 +50,7 @@
             <q-icon name="home" />
           </q-item-section>
           <q-item-section>
-            Main Page
+            Главная
           </q-item-section>
         </q-item>
        
@@ -60,7 +59,7 @@
             <q-icon name="list_alt" />
           </q-item-section>
           <q-item-section>
-            Catalog
+            Каталог
           </q-item-section>
         </q-item>
         <q-item to="/help" exact clickable v-ripple>
@@ -68,7 +67,7 @@
             <q-icon name="contact_support" />
           </q-item-section>
           <q-item-section>
-            Help
+            Помощь
           </q-item-section>
         </q-item>
         <q-item to="/about" exact clickable v-ripple>
@@ -76,7 +75,7 @@
             <q-icon name="info_outline" />
           </q-item-section>
           <q-item-section>
-            About Us
+            О нас
           </q-item-section>
         </q-item>
   
@@ -85,7 +84,7 @@
             <q-icon name="shopping_basket" />
           </q-item-section>
           <q-item-section>
-            Cart
+            Корзина
           </q-item-section>
         </q-item>
       </q-list>
@@ -223,10 +222,6 @@ export default defineComponent({
     height: 30px;
     width: 150px;
     color: white;
-  }
-   .bottom-header__text {
-    font-size: 18px;
-    color:white;
   }
   .actions-header_login:hover {
     background: white;

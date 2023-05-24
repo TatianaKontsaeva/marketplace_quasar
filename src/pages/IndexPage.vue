@@ -1,8 +1,9 @@
 <template>
-  <q-page class="flex flex-center q-pa-lg">
+  <q-page class="flex-center q-pa-lg">
     <h3>Магазин электронной техники фирмы Apple</h3>
     <div class="flex no-wrap items-start">
-      <div><img
+      <div class="flex-center">
+        <img
         alt="apple devices"
         src="../assets/img/main.webp"
       ></div>
@@ -13,11 +14,6 @@
 <script>
 import { defineComponent, ref } from 'vue'
 export default defineComponent({ })
-
-
-
- 
-
 </script>
 <style>
 

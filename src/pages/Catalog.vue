@@ -142,8 +142,8 @@ setup() {
     };
   },
 });
-
-
+</script>
+<style lang="scss">
   .btn-search {
     margin-top: 10px;
     cursor: pointer;
@@ -164,5 +164,4 @@ setup() {
     background:  #711297;
     color: white;
   }
-</style></script>
-<style lang="scss">
+</style>

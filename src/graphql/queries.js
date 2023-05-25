@@ -3,51 +3,56 @@ import gql from "graphql-tag";
 export const queries = {
   getAll: gql`
     query {
-      store {
-        description
+      product {
+        name
         id
         img
         price
         type
+        description
       }
     }
   `,
+  sort: gql`
+  query ($type: [String!], $sort: [product_order_by!]) {
+    product(where: { type: { _in: $type } }, order_by: $sort) {
+      id
+      img
+      price
+      type
+      name
+      description
+    }
+  }
+`,
   filter: gql`
     query ($type: [String!]) {
-     store(where: { type: { _in: $type } }) {
+      product(where: { type: { _in: $type } }) {
         id
         img
         price
         type
+        name
         description
       }
     }
   `,
   sortByType: gql`
     query {
-        store(order_by: { type: asc }) {
-        description
+      product(order_by: { type: asc }) {
+        name
         id
         img
         price
         type
+        description
       }
     }
   `,
   sortByPrice: gql`
     query {
-        store(order_by: { price: asc }) {
-        description
-        id
-        img
-        price
-        type
-      }
-    }
-  `,
-  sort: gql`
-    query ($type: [String!], $sort: [store_order_by!]) {
-      store(where: { type: { _in: $type } }, order_by: $sort) {
+      product(order_by: { price: asc }) {
+        name
         id
         img
         price
@@ -58,11 +63,12 @@ export const queries = {
   `,
   searchData: gql`
     query ($like: String!) {
-        store(where: { description: { _ilike: $like } }) {
+      product(where: { name: { _ilike: $like } }) {
         id
         img
         price
         type
+        name
         description
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <q-page class="">
+  <q-page class="flex">
       <div class="q-pa-lg">
         <div class="flex justify-between">
           <div>
@@ -32,7 +32,7 @@
         />
       </div>
       <div class="q-pa-md row items-start justify-center q-gutter-md">
-        <ms-card
+        <v-catalog-item
           v-for="item in items"
           :key="item.id"
           :item="item"
@@ -55,22 +55,26 @@
     </div>
   </q-page>
 </template>
+
 <script>
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
-// import Card from "src/components/Card.vue";
-import { useStore } from "../store/filter";
+import VCatalogItem from "src/components/VCatalogItem.vue";
+import { useStore } from "../store/store";
 import { computed } from "vue";
-import { queries } from "../graphql/queries";
+import { queries } from "src/graphql/queries";
 import { useQuery } from "@vue/apollo-composable";
 import { useQuasar } from "quasar";
 
 export default defineComponent({
-name: 'Catalog',
-setup() {
+  name: "Catalog",
+  components: {
+    VCatalogItem,
+  },
+  setup() {
     const $q = useQuasar();
     const store = useStore();
     const items = computed(() => store.items ?? []);
-    const btnLable = "Add to cart";
+    const btnLable = "В корзину";
     const dataSearch = ref(null);
 
     const addToCart = (id) => {
@@ -82,11 +86,11 @@ setup() {
           type: store.types,
           sort: { type: "asc" },
         });
-        store.items = computed(() => result.value?.store ?? []);
+        store.items = computed(() => result.value?.product ?? []);
         return;
       }
       const { result } = useQuery(queries.sortByType);
-      store.items = computed(() => result.value?.store ?? []);
+      store.items = computed(() => result.value?.product ?? []);
     };
     const sortByPrice = () => {
       if (store.types.length) {
@@ -94,28 +98,28 @@ setup() {
           type: store.types,
           sort: { price: "asc" },
         });
-        store.items = computed(() => result.value?.store ?? []);
+        store.items = computed(() => result.value?.product ?? []);
         return;
       }
       const { result } = useQuery(queries.sortByPrice);
-      store.items = computed(() => result.value?.store ?? []);
+      store.items = computed(() => result.value?.product ?? []);
     };
     const showNotif = () => {
       $q.notify({
         type: "warning",
-        message: "Такого товара нет",
+        message:  "Такого товара нет",
       });
     };
     const searchRequest = () => {
       const { result, loading } = useQuery(queries.searchData, {
         like: `%${dataSearch.value}%`,
       });
-      const getAll = computed(() => result.value?.store ?? []);
+      const getAll = computed(() => result.value?.product ?? []);
       store.items = getAll;
       setTimeout(() => {
         if (!store.items.length) {
           const { result } = useQuery(queries.getAll);
-          store.items = computed(() => result.value?.store ?? []);
+          store.items = computed(() => result.value?.product ?? []);
 
           showNotif();
         }
@@ -143,6 +147,7 @@ setup() {
   },
 });
 </script>
+
 <style lang="scss">
   .btn-search {
     margin-top: 10px;

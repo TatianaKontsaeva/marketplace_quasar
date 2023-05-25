@@ -4,3 +4,4 @@ export const logout = async () => {
 export const login = async ({ email, password }) => {
     window.Clerk.openSignIn();
 };
+

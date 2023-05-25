@@ -7,4 +7,3 @@ const apolloClient = new ApolloClient(options);
 
 export default
   apolloClient
-  

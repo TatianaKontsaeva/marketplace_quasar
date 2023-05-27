@@ -6,7 +6,7 @@ provideApolloClient(apolloClient);
 
 export const useStore = defineStore("filter", {
   state: () => ({
-    items: null,
+    products: null,
     cart: [],
     types: [],
     allTypes: [],
@@ -15,7 +15,7 @@ export const useStore = defineStore("filter", {
   getters: {},
   actions: {
     addToCart(id) {
-      this.items.forEach((elem) => {
+      this.products.forEach((elem) => {
         if (elem.id == id) {
           if (!this.cart.includes(elem)) {
             this.cart.push(elem);
@@ -27,7 +27,7 @@ export const useStore = defineStore("filter", {
       this.cart = this.cart.filter((el) => el.id != id);
     },
     getTypes() {
-      this.allTypes = this.items.map((elem) => elem.type);
+      this.allTypes = this.products.map((elem) => elem.type);
     },
   },
 });

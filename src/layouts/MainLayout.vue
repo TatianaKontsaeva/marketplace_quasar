@@ -149,7 +149,6 @@ provideApolloClient(apolloClient);
 
 export default {
   setup() {
-
     const leftDrawerOpen = ref(false);
     const phone = ref(null);
     const tablet = ref(null);
@@ -161,7 +160,7 @@ export default {
     const router = useRouter();
 
     let totalPrice = computed(() =>
-      store.cart?.reduce((acc, item) => acc + item.price, 0)
+      store.cart?.reduce((acc, product) => acc + product.price, 0)
     );
 
     const setFilter = (param) => {
@@ -177,14 +176,14 @@ export default {
         const getAll = useQuery(() => queries.filter, {
           type: ["phone", "tablet", "laptop", "pc", "smartwatch"],
         });
-        store.items = computed(() => getAll.result.value?.product ?? []);
+        store.products = computed(() => getAll.result.value?.product ?? []);
         return;
       }
-      store.items = computed(() => getAll.result.value?.product ?? []);
+      store.products = computed(() => getAll.result.value?.product ?? []);
     };
     onMounted(() => {
       const { result } = useQuery(queries.getAll);
-      store.items = computed(() => result.value?.product ?? []);
+      store.products = computed(() => result.value?.product ?? []);
       totalPrice;
     });
     const onSubmit = (evt) => {
@@ -208,7 +207,7 @@ export default {
       store.types = [];
 
       const getAll = useQuery(() => queries.getAll);
-      store.items = computed(() => getAll.result.value?.product ?? []);
+      store.products = computed(() => getAll.result.value?.product ?? []);
     };
 
     return {

@@ -5,12 +5,12 @@ const routes = [
     children: [
       { path: "", component: () => import("src/pages/IndexPage.vue") },
       { path: "/catalog/", component: () => import("src/pages/Catalog.vue") },
-      { path: "/cart/", component: () => import("src/pages/V-Cart.vue") },
+      { path: "/cart/", component: () => import("src/pages/Cart.vue") },
       {
         path: "/:id/",
         name: "V-productPage",
         props: true,
-        component: () => import("src/pages/V-productPage.vue"),
+        component: () => import("src/pages/ProductPage.vue"),
       },
       {
         path: "/help/",

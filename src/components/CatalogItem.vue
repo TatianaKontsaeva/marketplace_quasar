@@ -2,23 +2,23 @@
   <q-card class="card-item">
    <img
       class="card-item-img"
-      :src="`${item.img}`"
-      :id="item.id"
+      :src="`${product.img}`"
+      :id="product.id"
       @click="toProductCard"
     />
-    <q-card-section :id="item.id" @click="toProductCard">
-      <div class="text-h6">{{ item.name }}</div>
-      <div class="text-h8">{{ item.description }}</div>
+    <q-card-section :id="product.id" @click="toProductCard">
+      <div class="text-h6">{{ product.name }}</div>
+      <div class="text-h8">{{ product.description }}</div>
       <div class="text-subtitle2">
-        Цена: <strong>{{ item.price }}</strong> Руб.
+        Цена: <strong>{{ product.price }}</strong> Руб.
       </div>
     </q-card-section>
     <q-card-section >
-      {{ item.type }}
+      {{ product.type }}
     </q-card-section>
     <div class="text-center">
       <q-btn
-        :id="item.id"
+        :id="product.id"
         class="btn-add"
         @click="handleClick"
         :lable="btnLable"
@@ -35,7 +35,7 @@ import { useRouter } from "vue-router";
 export default {
   name: "VCatalogItem",
   props: {
-    item: {
+    product: {
       type: Object,
       default() {},
     },

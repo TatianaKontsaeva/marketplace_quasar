@@ -3,7 +3,7 @@
     <div>
       <img 
       class="product-page-img" 
-      :src="`${item.img}`" 
+      :src="`${product.img}`" 
       />
     </div>
     <div>
@@ -11,24 +11,24 @@
         <q-list bordered class="q-pa-md flex justify-between card_product">
           <q-item >
             <q-item-section>
-              <q-item-label class="text-h5">{{ item.name }}</q-item-label>
-              <q-item-label class="text-h7">{{ item.description}}</q-item-label>
+              <q-item-label class="text-h5">{{ product.name }}</q-item-label>
+              <q-item-label class="text-h7">{{ product.description}}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item>
             <q-item-section>
               <q-item-label>Цена</q-item-label>
               <q-item-label>{{
-               item.price
+               product.price
               }} Руб.</q-item-label>
             </q-item-section>
           </q-item>
           <q-item class="justify-center">
             <q-btn 
             class="btn-buy"
-            :id="item.id" 
+            :id="product.id" 
             @click="add"
-            label="Купить"/>
+            label="В корзину"/>
           </q-item>
         </q-list>
       </div>
@@ -40,14 +40,14 @@
 import { useStore } from "src/store/store";
 
 export default {
-  name: "V-productPage",
+  name: "ProductPage",
   props: ["id"],
   setup(props) {
     const store = useStore();
-    const item = store.items.filter((elem) => elem.id == props.id)[0];
+    const product = store.products.filter((elem) => elem.id == props.id)[0];
     const add = (e) => store.addToCart(e.currentTarget.id);
     return {
-      item,
+      product,
       add,
     };
   },
@@ -60,7 +60,7 @@ export default {
   height: 200px;
 }
 .btn-buy {
-  width: 100px;
+  width: 150px;
   height: 30px;
   border: 1px solid #3c0979;
   border-radius: 5px;

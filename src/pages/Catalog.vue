@@ -32,17 +32,17 @@
         />
       </div>
       <div class="q-pa-md row items-start justify-center q-gutter-md">
-        <v-catalog-item
-          v-for="item in items"
-          :key="item.id"
-          :item="item"
+        <catalog-item
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
           :lable="btnLable"
           :func="addToCart"
         />
       </div>
     </div>
   </div>
-      <div v-if="!items.length" class="flex column justify-center">
+      <div v-if="!products.length" class="flex column justify-center">
         <div>
         <q-spinner-ball
           color="primary"
@@ -58,7 +58,7 @@
 
 <script>
 import { defineComponent, onMounted, onUnmounted, ref } from "vue";
-import VCatalogItem from "src/components/VCatalogItem.vue";
+import CatalogItem from "src/components/CatalogItem.vue";
 import { useStore } from "../store/store";
 import { computed } from "vue";
 import { queries } from "src/graphql/queries";
@@ -68,12 +68,12 @@ import { useQuasar } from "quasar";
 export default defineComponent({
   name: "Catalog",
   components: {
-    VCatalogItem,
+    CatalogItem,
   },
   setup() {
     const $q = useQuasar();
     const store = useStore();
-    const items = computed(() => store.items ?? []);
+    const products = computed(() => store.products ?? []);
     const btnLable = "В корзину";
     const dataSearch = ref(null);
 
@@ -86,11 +86,11 @@ export default defineComponent({
           type: store.types,
           sort: { type: "asc" },
         });
-        store.items = computed(() => result.value?.product ?? []);
+        store.products = computed(() => result.value?.product ?? []);
         return;
       }
       const { result } = useQuery(queries.sortByType);
-      store.items = computed(() => result.value?.product ?? []);
+      store.products = computed(() => result.value?.product ?? []);
     };
     const sortByPrice = () => {
       if (store.types.length) {
@@ -98,11 +98,11 @@ export default defineComponent({
           type: store.types,
           sort: { price: "asc" },
         });
-        store.items = computed(() => result.value?.product ?? []);
+        store.products = computed(() => result.value?.product ?? []);
         return;
       }
       const { result } = useQuery(queries.sortByPrice);
-      store.items = computed(() => result.value?.product ?? []);
+      store.products = computed(() => result.value?.product ?? []);
     };
     const showNotif = () => {
       $q.notify({
@@ -117,9 +117,9 @@ export default defineComponent({
       const getAll = computed(() => result.value?.product ?? []);
       store.items = getAll;
       setTimeout(() => {
-        if (!store.items.length) {
+        if (!store.products.length) {
           const { result } = useQuery(queries.getAll);
-          store.items = computed(() => result.value?.product ?? []);
+          store.products = computed(() => result.value?.product ?? []);
 
           showNotif();
         }
@@ -129,13 +129,12 @@ export default defineComponent({
     onMounted(() => {
       store.isCatalog = true;
     });
-
     onUnmounted(() => {
       store.isCatalog = false;
     });
 
     return {
-      items,
+      products,
       sortByType,
       sortByPrice,
       btnLable,

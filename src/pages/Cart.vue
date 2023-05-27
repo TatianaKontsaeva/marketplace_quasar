@@ -1,17 +1,17 @@
 <template>
   <h2 class="flex justify-center q-pa-md">Корзина</h2>
   <q-page class="flex justify-center">
-    <div v-if="!items.length" class="text-h4 q-pa-md">В корзине пока ничего нет... </div>
+    <div v-if="!products.length" class="text-h4 q-pa-md">В корзине пока ничего нет... </div>
     <div v-else>
       <div class="flex justify-between cart_btns">
         <q-btn class="q-ma-xs btn-back" to="/catalog" label="Назад в каталог"/>
         <q-btn class="q-ma-xs btn-pay" @click="dialog = true" label="Купить"/>
       </div>
       <div class="q-pa-md row justify-center q-gutter-md">
-        <v-catalog-item
-          v-for="item in items"
-          :key="item.id"
-          :item="item"
+        <catalog-item
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
           :lable="btnLable"
           :func="remoteFromCart"
         />
@@ -67,30 +67,29 @@
         <q-btn label="Оплатить" type="submit" class="btn_for_pay"/>
         <q-btn label="Reset" type="reset" color="dark" flat class="q-ml-sm" />
       </div>
-      
     </q-form>
   </div>
 </q-dialog>
 </template>
 
 <script>
-import VCatalogItem from "src/components/VCatalogItem.vue";
+import CatalogItem from "src/components/CatalogItem.vue";
 import { useStore } from "../store/store";
 import { computed, ref } from "vue";
 
 export default {
-  name: "V-Cart",
+  name: "Cart",
   components: {
-    VCatalogItem,
+    CatalogItem,
   },
   data() {
     return {
-      items: [],
+      products: [],
     };
   },
   setup() {
     const store = useStore();
-    const items = computed(() => store.cart ?? []);
+    const products = computed(() => store.cart ?? []);
     const btnLable = "Удалить";
     const remoteFromCart = (id) => {
       store.removeFromCart(id);
@@ -102,7 +101,7 @@ export default {
     const cvc = ref(null)
 
     return {
-      items,
+      products,
       btnLable,
       dialog: ref(false),
       userName,

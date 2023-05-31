@@ -12,10 +12,12 @@
           v-for="product in products"
           :key="product.id"
           :product="product"
-          :lable="btnLable"
+          :lable="btnName"
           :func="remoteFromCart"
         />
+        
       </div>
+  
     </div>
   </q-page>
     <q-dialog v-model="dialog">
@@ -79,6 +81,14 @@ import { computed, ref } from "vue";
 
 export default {
   name: "Cart",
+  props: {
+        cart_item_data: {
+            type: Object,
+            default() {
+                return {};
+            }
+        }
+    },
   components: {
     CatalogItem,
   },
@@ -90,7 +100,7 @@ export default {
   setup() {
     const store = useStore();
     const products = computed(() => store.cart ?? []);
-    const btnLable = "Удалить";
+    const btnName = "Удалить";
     const remoteFromCart = (id) => {
       store.removeFromCart(id);
     };
@@ -100,9 +110,13 @@ export default {
     const accept = ref(false)
     const cvc = ref(null)
 
+    let incrementItem = computed(() =>
+      store.cart?.reduce((acc, product) => acc + product.id, 0)
+    );
     return {
+      incrementItem,
       products,
-      btnLable,
+      btnName,
       dialog: ref(false),
       userName,
       cc,
@@ -138,7 +152,7 @@ export default {
         accept.value = false
       }
     }
-  }
+  },
 }
    
 </script>

@@ -2,9 +2,21 @@
   <q-page class="flex">
       <div class="q-pa-lg">
         <div class="flex justify-between">
+          <div class="contents">
           <div>
           <h2>Каталог</h2>
         </div>
+      <div style="cursor:pointer;">
+        <q-item to="/cart" exact clickable v-ripple>
+          <q-icon name="shopping_basket" size="md" color="primary"/>
+          {{ cart.length }}
+        </q-item>
+        <q-item-section>
+          <div v-if="totalPrice>0"> Общая стоимость: {{ totalPrice }} </div>
+          </q-item-section>
+       
+      </div>
+      </div>
         <div class="items-center">
       <q-input
         @keyup.enter="searchRequest"
@@ -36,7 +48,7 @@
           v-for="product in products"
           :key="product.id"
           :product="product"
-          :lable="btnLable"
+          :lable="btnName"
           :func="addToCart"
         />
       </div>
@@ -57,7 +69,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import CatalogItem from "src/components/CatalogItem.vue";
 import { useStore } from "../store/store";
 import { computed } from "vue";
@@ -73,13 +85,40 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
     const store = useStore();
+    const cart = computed(() => store.cart ?? []);
     const products = computed(() => store.products ?? []);
-    const btnLable = "В корзину";
+    const btnName = "В корзину";
     const dataSearch = ref(null);
 
     const addToCart = (id) => {
       store.addToCart(id);
     };
+    let totalPrice = computed(() =>
+      store.cart?.reduce((acc, product) => acc + product.price, 0)
+    );
+    
+    const showNotif = () => {
+      $q.notify({
+        type: "warning",
+        message:  "Такого товара нет",
+      });
+    };
+    const searchRequest = () => {
+      const { result, loading } = useQuery(queries.searchData, {
+        like: `%${dataSearch.value}%`,
+      });
+      const getAll = computed(() => result.value?.product ?? []);
+      store.items = getAll;
+      setTimeout(() => {
+        if (!store.products.length) {
+          const { result } = useQuery(queries.getAll);
+          store.products = computed(() => result.value?.product ?? []);
+          showNotif();
+        }
+      }, 500);
+      dataSearch.value = "";
+    };
+
     const sortByType = () => {
       if (store.types.length) {
         const { result } = useQuery(queries.sort, {
@@ -104,44 +143,21 @@ export default defineComponent({
       const { result } = useQuery(queries.sortByPrice);
       store.products = computed(() => result.value?.product ?? []);
     };
-    const showNotif = () => {
-      $q.notify({
-        type: "warning",
-        message:  "Такого товара нет",
-      });
-    };
-    const searchRequest = () => {
-      const { result, loading } = useQuery(queries.searchData, {
-        like: `%${dataSearch.value}%`,
-      });
-      const getAll = computed(() => result.value?.product ?? []);
-      store.items = getAll;
-      setTimeout(() => {
-        if (!store.products.length) {
-          const { result } = useQuery(queries.getAll);
-          store.products = computed(() => result.value?.product ?? []);
-
-          showNotif();
-        }
-      }, 500);
-      dataSearch.value = "";
-    };
     onMounted(() => {
       store.isCatalog = true;
     });
-    onUnmounted(() => {
-      store.isCatalog = false;
-    });
-
+   
     return {
       products,
       sortByType,
       sortByPrice,
-      btnLable,
       addToCart,
       dataSearch,
       searchRequest,
       showNotif,
+      btnName,
+      cart,
+      totalPrice,
     };
   },
 });
@@ -167,5 +183,8 @@ export default defineComponent({
   .btn-price:hover {
     background:  #711297;
     color: white;
+  }
+  .contents {
+    display: contents;
   }
 </style>

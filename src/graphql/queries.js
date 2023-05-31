@@ -10,6 +10,7 @@ export const queries = {
         price
         type
         description
+        quantity
       }
     }
   `,
@@ -22,6 +23,7 @@ export const queries = {
       type
       name
       description
+      quantity
     }
   }
 `,
@@ -34,6 +36,7 @@ export const queries = {
         type
         name
         description
+        quantity
       }
     }
   `,
@@ -46,6 +49,7 @@ export const queries = {
         price
         type
         description
+        quantity
       }
     }
   `,
@@ -58,6 +62,7 @@ export const queries = {
         price
         type
         description
+        quantity
       }
     }
   `,
@@ -70,7 +75,9 @@ export const queries = {
         type
         name
         description
+        quantity
       }
+
     }
   `,
 };

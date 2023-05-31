@@ -10,18 +10,27 @@ export const useStore = defineStore("filter", {
     cart: [],
     types: [],
     allTypes: [],
-    isCatalog: false
+    isCatalog: false,
+    total: 0,
+     quantityProductsCart: 0,
   }),
   getters: {},
   actions: {
     addToCart(id) {
       this.products.forEach((elem) => {
-        if (elem.id == id) {
+        if (elem.id == id)  {
           if (!this.cart.includes(elem)) {
             this.cart.push(elem);
+          } else if (this.cart.includes(elem)) {
+            this.cart.push(elem);
+          
           }
         }
       });
+    },
+    INCREMENT(product) {
+      quantityProd.value++;
+      this.totalPrice += product.price;
     },
     removeFromCart(id) {
       this.cart = this.cart.filter((el) => el.id != id);
@@ -30,4 +39,16 @@ export const useStore = defineStore("filter", {
       this.allTypes = this.products.map((elem) => elem.type);
     },
   },
+  mutations: {
+    INCREMENT: (state, index) => {
+      state.cart[index].quantity++
+    },
+    DECREMENT: (state, index) => {
+      if (state.cart[index].quantity >= 1) {
+        state.cart[index].quantity--;
+    } 
+    },
+    
+
+  }
 });

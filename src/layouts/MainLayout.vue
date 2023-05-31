@@ -13,11 +13,11 @@
         <q-toolbar class="header__bottom q-px-lg q-pt-md q-mb-md">
           <div class="bottom-header__container">
             <div class="bottom-header__column">
-                <p class="bottom-header__text">Войти в личный кабинет</p>
                 <q-item id="auth-links">
                     <q-btn 
                     class="actions-header_login" 
                     label="Войти" 
+                    icon="login" 
                     type="button"
                     @click="login" />
                 </q-item>
@@ -28,9 +28,7 @@
         </div>
       </q-toolbar>
     </div>
-  
   </q-header>
-
     <q-drawer
         v-model="leftDrawerOpen"
         show-if-above
@@ -52,22 +50,21 @@
             <q-icon name="list_alt" />
           </q-item-section>
           <q-item-section>
-          <q-btn-dropdown label="Каталог" outline >
-              <div class="row no-wrap q-pa-md">
-                <q-form @submit="onSubmit">
-                  <div class="column">
-                    <q-checkbox name="category" v-model="phone" label="телефоны" true-value="phone"/>
-                    <q-checkbox name="category" v-model="tablet" label="планшеты" true-value="tablet"/>
-                    <q-checkbox name="category" v-model="laptop" label="ноутбуки" true-value="laptop"/>
-                    <q-checkbox name="category" v-model="pc" label="компьютеры" true-value="pc"/>
-                    <q-checkbox name="category" v-model="smartwatch" label="smart-часы" true-value="smartwatch"/>
-                    <q-btn label="Показать" type="submit" outline class="get-btn q-px-lg"/>
-                    <q-btn label="Показать все" @click="getAllItems" class="getAll-btn"/>
-                  </div>
-                </q-form>
-                
-              </div>
-      </q-btn-dropdown>
+            <q-btn-dropdown label="Каталог" outline >
+                <div class="row no-wrap q-pa-md">
+                  <q-form @submit="onSubmit">
+                    <div class="column">
+                      <q-checkbox name="category" v-model="phone" label="телефоны" true-value="phone"/>
+                      <q-checkbox name="category" v-model="tablet" label="планшеты" true-value="tablet"/>
+                      <q-checkbox name="category" v-model="laptop" label="ноутбуки" true-value="laptop"/>
+                      <q-checkbox name="category" v-model="pc" label="компьютеры" true-value="pc"/>
+                      <q-checkbox name="category" v-model="smartwatch" label="smart-часы" true-value="smartwatch"/>
+                      <q-btn label="Показать" type="submit" outline class="get-btn q-px-lg"/>
+                      <q-btn label="Показать все" @click="getAllItems" class="getAll-btn"/>
+                    </div>
+                  </q-form>
+                </div>
+            </q-btn-dropdown>
           </q-item-section>
         </q-item>
         <q-item to="/help" exact clickable v-ripple>
@@ -93,7 +90,7 @@
           </q-item-section>
           <q-item-section>
           Товары в корзине:  {{ cart.length }}
-          <div> Общая стоимость: {{ totalPrice }} </div>
+          <div v-if="totalPrice>0"> Общая стоимость: {{ totalPrice }} </div>
           </q-item-section>
         </q-item>
       </q-list>
@@ -116,6 +113,8 @@ import { useStore } from "../store/store";
 import apolloClient from "../apollo/client.js";
 import { useRouter } from "vue-router";
 
+
+//---------------- настройка clerk
 import { login, logout } from '../clerk/user'
 
 //import Clerk from "@clerk/clerk-js";
@@ -144,7 +143,7 @@ script.addEventListener("load", async function () {
   }
 });
 document.body.appendChild(script);
-
+//----------------
 provideApolloClient(apolloClient);
 
 export default {

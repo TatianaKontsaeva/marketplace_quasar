@@ -13,17 +13,42 @@
         Цена: <strong>{{ product.price }}</strong> Руб.
       </div>
     </q-card-section>
+    <div class="flex justify-between items-center">
     <q-card-section >
       {{ product.type }}
     </q-card-section>
+      <div class="q-pa-md q-gutter-sm">
+        <q-btn 
+        round size="sm" 
+        class="btnQuantity" 
+        icon="remove"  
+        :id="product.id"
+        @click="handleClick"
+      
+        />
+      <input
+                class="quantity__input"
+                type="text"
+                v-model="quantityProd"
+              />
+      <q-btn 
+        round  
+        size="sm" 
+        class="btnQuantity" 
+        icon="add"  
+        :id="product.id"
+        @click="handleClick"/>
+      </div>
+    </div>
     <div class="text-center">
       <q-btn
         :id="product.id"
         class="btn-add"
         @click="handleClick"
-        :lable="btnLable"
+        :lable="btnName"
         > {{ lable }} </q-btn>
     </div>
+   
   </q-card>
 </template>
 
@@ -31,6 +56,7 @@
 import { storeToRefs } from "pinia";
 import { useStore } from "../store/store";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 
 export default {
   name: "VCatalogItem",
@@ -50,18 +76,35 @@ export default {
     const store = useStore();
     const { cart } = storeToRefs(store);
     const router = useRouter();
-
+    const quantityProd = ref(0);
+  
+    const increment = function (product) {
+      quantityProd.value++;
+    };
+    const decrement = function (product) {
+      if (quantityProd.value >= 1) {
+        quantityProd.value--;
+      } 
+    };
+    
     const toProductCard = (e) => {
       router.push({ name: "V-productPage", params: { id: e.currentTarget.id } });
     };
     const handleClick = (e) => {
       const add = props.func;
       add(e.currentTarget.id);
+      quantityProd.value++;
     };
+  
+
     return {
       cart,
       handleClick,
       toProductCard,
+      increment,
+      decrement,
+      quantityProd,
+  
     };
   },
 };
@@ -88,5 +131,13 @@ export default {
 }
 .btn-add:hover {
   background: linear-gradient(270deg, rgba(2,0,36,1) 0%, rgba(60,9,121,1) 47%, rgba(57,0,255,1) 100%);
+}
+.quantity__input {
+  width: 20px;
+
+}
+.btnQuantity {
+  background: #301d6e;
+  color: white;
 }
 </style>

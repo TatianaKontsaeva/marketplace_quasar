@@ -75,7 +75,6 @@ export default {
     const { cart } = storeToRefs(store);
     const router = useRouter();
     const quantityProd = ref(0);
-  
     const toProductCard = (e) => {
       router.push({ name: "V-productPage", params: { id: e.currentTarget.id } });
     };
@@ -90,14 +89,13 @@ export default {
       toProductCard,
       quantityProd,
       deleteFromCart(index) {
-          store.cart.splice(index, 1);
-          quantityProd.value--;
+        store.cart.splice(index, 1);
+        quantityProd.value--;
         }
     };
   },
 };
 </script>
-
 <style>
 .card-item {
   cursor: pointer;

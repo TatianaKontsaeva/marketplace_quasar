@@ -12,7 +12,7 @@ export const useStore = defineStore("filter", {
     allTypes: [],
     isCatalog: false,
     total: 0,
-     quantityProductsCart: 0,
+    quantityProductsCart: 0,
   }),
   getters: {},
   actions: {
@@ -31,6 +31,10 @@ export const useStore = defineStore("filter", {
     INCREMENT(product) {
       quantityProd.value++;
       this.totalPrice += product.price;
+    },
+    DECREMENT(product) {
+      quantityProd.value--;
+      this.totalPrice -= product.price;
     },
     removeFromCart(id) {
       this.cart = this.cart.filter((el) => el.id != id);

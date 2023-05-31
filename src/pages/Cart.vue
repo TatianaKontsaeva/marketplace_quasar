@@ -8,16 +8,13 @@
         <q-btn class="q-ma-xs btn-pay" @click="dialog = true" label="Купить"/>
       </div>
       <div class="q-pa-md row justify-center q-gutter-md">
-        <catalog-item
+        <cart-item
           v-for="product in products"
           :key="product.id"
-          :product="product"
-          :lable="btnName"
+          :cart_item_data="product" 
           :func="remoteFromCart"
         />
-        
       </div>
-  
     </div>
   </q-page>
     <q-dialog v-model="dialog">
@@ -64,7 +61,6 @@
         ]"
       />
       <q-toggle v-model="accept" label="Я принимаю условия" />
-
       <div>
         <q-btn label="Оплатить" type="submit" class="btn_for_pay"/>
         <q-btn label="Reset" type="reset" color="dark" flat class="q-ml-sm" />
@@ -73,24 +69,26 @@
   </div>
 </q-dialog>
 </template>
-
 <script>
-import CatalogItem from "src/components/CatalogItem.vue";
+import CartItem from "src/components/CartItem.vue";
 import { useStore } from "../store/store";
 import { computed, ref } from "vue";
 
 export default {
   name: "Cart",
   props: {
-        cart_item_data: {
-            type: Object,
-            default() {
-                return {};
-            }
+    cart_data: {
+      type: Array,
+        default() {
+          return [];
         }
+  },
+    func: {
+      type: Function,
+  },
     },
-  components: {
-    CatalogItem,
+    components: {
+    CartItem
   },
   data() {
     return {
@@ -109,7 +107,6 @@ export default {
     const exp_date = ref(null)
     const accept = ref(false)
     const cvc = ref(null)
-
     let incrementItem = computed(() =>
       store.cart?.reduce((acc, product) => acc + product.id, 0)
     );
@@ -154,9 +151,7 @@ export default {
     }
   },
 }
-   
 </script>
-
 <style lang="scss">
  .btn-pay {
     border: 1px solid #091b79;

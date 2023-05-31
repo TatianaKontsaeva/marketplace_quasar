@@ -23,13 +23,12 @@
         class="btnQuantity" 
         icon="remove"  
         :id="product.id"
-        @click="handleClick"
-      
+        @click="deleteFromCart" 
         />
       <input
-                class="quantity__input"
-                type="text"
-                v-model="quantityProd"
+        class="quantity__input"
+        type="text"
+        v-model="quantityProd"
               />
       <q-btn 
         round  
@@ -48,7 +47,6 @@
         :lable="btnName"
         > {{ lable }} </q-btn>
     </div>
-   
   </q-card>
 </template>
 
@@ -78,15 +76,6 @@ export default {
     const router = useRouter();
     const quantityProd = ref(0);
   
-    const increment = function (product) {
-      quantityProd.value++;
-    };
-    const decrement = function (product) {
-      if (quantityProd.value >= 1) {
-        quantityProd.value--;
-      } 
-    };
-    
     const toProductCard = (e) => {
       router.push({ name: "V-productPage", params: { id: e.currentTarget.id } });
     };
@@ -95,16 +84,15 @@ export default {
       add(e.currentTarget.id);
       quantityProd.value++;
     };
-  
-
     return {
       cart,
       handleClick,
       toProductCard,
-      increment,
-      decrement,
       quantityProd,
-  
+      deleteFromCart(index) {
+          store.cart.splice(index, 1);
+          quantityProd.value--;
+        }
     };
   },
 };

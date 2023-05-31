@@ -23,7 +23,6 @@ export const useStore = defineStore("filter", {
             this.cart.push(elem);
           } else if (this.cart.includes(elem)) {
             this.cart.push(elem);
-          
           }
         }
       });
@@ -47,12 +46,5 @@ export const useStore = defineStore("filter", {
     INCREMENT: (state, index) => {
       state.cart[index].quantity++
     },
-    DECREMENT: (state, index) => {
-      if (state.cart[index].quantity >= 1) {
-        state.cart[index].quantity--;
-    } 
-    },
-    
-
   }
 });

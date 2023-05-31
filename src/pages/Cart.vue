@@ -1,5 +1,5 @@
 <template>
-  <h2 class="flex justify-center q-pa-md">Корзина</h2>
+   <h2 class="flex justify-center q-pa-md">Корзина</h2>
   <q-page class="flex justify-center">
     <div v-if="!products.length" class="text-h4 q-pa-md">В корзине пока ничего нет... </div>
     <div v-else>

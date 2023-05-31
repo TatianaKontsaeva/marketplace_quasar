@@ -22,7 +22,7 @@
         @keyup.enter="searchRequest"
         standard
         bottom-slots
-        v-model="dataSearch"
+        v-model="productSearch"
         label="Поиск по товарам"
       >
         <q-icon
@@ -88,7 +88,7 @@ export default defineComponent({
     const cart = computed(() => store.cart ?? []);
     const products = computed(() => store.products ?? []);
     const btnName = "В корзину";
-    const dataSearch = ref(null);
+    const productSearch = ref(null);
 
     const addToCart = (id) => {
       store.addToCart(id);
@@ -96,29 +96,6 @@ export default defineComponent({
     let totalPrice = computed(() =>
       store.cart?.reduce((acc, product) => acc + product.price, 0)
     );
-    
-    const showNotif = () => {
-      $q.notify({
-        type: "warning",
-        message:  "Такого товара нет",
-      });
-    };
-    const searchRequest = () => {
-      const { result, loading } = useQuery(queries.searchData, {
-        like: `%${dataSearch.value}%`,
-      });
-      const getAll = computed(() => result.value?.product ?? []);
-      store.items = getAll;
-      setTimeout(() => {
-        if (!store.products.length) {
-          const { result } = useQuery(queries.getAll);
-          store.products = computed(() => result.value?.product ?? []);
-          showNotif();
-        }
-      }, 500);
-      dataSearch.value = "";
-    };
-
     const sortByType = () => {
       if (store.types.length) {
         const { result } = useQuery(queries.sort, {
@@ -143,6 +120,30 @@ export default defineComponent({
       const { result } = useQuery(queries.sortByPrice);
       store.products = computed(() => result.value?.product ?? []);
     };
+    
+    const showNotif = () => {
+      $q.notify({
+        type: "warning",
+        message:  "Такого товара нет",
+      });
+    };
+    
+    const searchRequest = () => {
+      const { result, loading } = useQuery(queries.searchData, {
+        like: `%${productSearch.value}%`,
+      });
+      const getAll = computed(() => result.value?.product ?? []);
+      store.products = getAll;
+      setTimeout(() => {
+        if (!store.products.length) {
+          const { result } = useQuery(queries.getAll);
+          store.products = computed(() => result.value?.product ?? []);
+
+          showNotif();
+        }
+      }, 500);
+      productSearch.value = "";
+    };
     onMounted(() => {
       store.isCatalog = true;
     });
@@ -152,7 +153,7 @@ export default defineComponent({
       sortByType,
       sortByPrice,
       addToCart,
-      dataSearch,
+      productSearch,
       searchRequest,
       showNotif,
       btnName,

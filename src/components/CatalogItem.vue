@@ -57,7 +57,7 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 export default {
-  name: "VCatalogItem",
+  name: "CatalogItem",
   props: {
     product: {
       type: Object,
@@ -76,7 +76,7 @@ export default {
     const router = useRouter();
     const quantityProd = ref(0);
     const toProductCard = (e) => {
-      router.push({ name: "V-productPage", params: { id: e.currentTarget.id } });
+      router.push({ name: "ProductPage", params: { id: e.currentTarget.id } });
     };
     const handleClick = (e) => {
       const add = props.func;
@@ -120,7 +120,6 @@ export default {
 }
 .quantity__input {
   width: 20px;
-
 }
 .btnQuantity {
   background: #301d6e;

@@ -67,8 +67,8 @@ export default defineComponent ({
         padding: 20px;
     }
     .cart-item__img {
-        width: 200px;
-        height: 100px;
+        max-width: 250px;
+        height: 200px;
     }
     .quantity__btn {
         cursor: pointer; 

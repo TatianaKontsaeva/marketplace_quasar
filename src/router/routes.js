@@ -3,12 +3,12 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("src/pages/IndexPage.vue") },
+      { path: "", component: () => import("src/pages/HomePage.vue") },
       { path: "/catalog/", component: () => import("src/pages/Catalog.vue") },
       { path: "/cart/", component: () => import("src/pages/Cart.vue") },
       {
         path: "/:id/",
-        name: "V-productPage",
+        name: "ProductPage",
         props: true,
         component: () => import("src/pages/ProductPage.vue"),
       },

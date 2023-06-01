@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex">
+   <q-page class="flex">
       <div class="q-pa-lg">
         <div class="flex justify-between">
           <div class="contents">
@@ -11,10 +11,6 @@
           <q-icon name="shopping_basket" size="md" color="primary"/>
           {{ cart.length }}
         </q-item>
-        <q-item-section>
-          <div v-if="totalPrice>0"> Общая стоимость: {{ totalPrice }} </div>
-          </q-item-section>
-       
       </div>
       </div>
         <div class="items-center">
@@ -96,6 +92,32 @@ export default defineComponent({
     let totalPrice = computed(() =>
       store.cart?.reduce((acc, product) => acc + product.price, 0)
     );
+   
+    //поиск
+    const showNotif = () => {
+      $q.notify({
+        type: "warning",
+        message:  "Такого товара нет",
+      });
+    };
+    const searchRequest = () => {
+      const { result, loading } = useQuery(queries.searchData, {
+        like: `%${productSearch.value}%`,
+      });
+      const getAll = computed(() => result.value?.product ?? []);
+      store.products = getAll;
+      setTimeout(() => {
+        if (!store.products.length) {
+          const { result } = useQuery(queries.getAll);
+          store.products = computed(() => result.value?.product ?? []);
+
+          showNotif();
+        }
+      }, 500);
+      productSearch.value = "";
+    };
+
+    //сортировка
     const sortByType = () => {
       if (store.types.length) {
         const { result } = useQuery(queries.sort, {
@@ -120,34 +142,11 @@ export default defineComponent({
       const { result } = useQuery(queries.sortByPrice);
       store.products = computed(() => result.value?.product ?? []);
     };
-    
-    const showNotif = () => {
-      $q.notify({
-        type: "warning",
-        message:  "Такого товара нет",
-      });
-    };
-    
-    const searchRequest = () => {
-      const { result, loading } = useQuery(queries.searchData, {
-        like: `%${productSearch.value}%`,
-      });
-      const getAll = computed(() => result.value?.product ?? []);
-      store.products = getAll;
-      setTimeout(() => {
-        if (!store.products.length) {
-          const { result } = useQuery(queries.getAll);
-          store.products = computed(() => result.value?.product ?? []);
-
-          showNotif();
-        }
-      }, 500);
-      productSearch.value = "";
-    };
+    //-------
     onMounted(() => {
       store.isCatalog = true;
     });
-   
+
     return {
       products,
       sortByType,

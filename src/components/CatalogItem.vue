@@ -106,7 +106,7 @@ export default {
 .card-item-img {
   width: 300px;
   height: 250px;
-  /* margin-top: 10px; */
+  margin-top: 10px;
 }
 .btn-add {
   border: 1px solid #3c0979;

@@ -149,15 +149,15 @@ export default defineComponent({
 
     return {
       products,
+      sortByType,
+      sortByPrice,
       addToCart,
-      btnName,
-      cart,
-      totalPrice,
       productSearch,
       searchRequest,
       showNotif,
-      sortByType,
-      sortByPrice,
+      btnName,
+      cart,
+      totalPrice,
     };
   },
 });

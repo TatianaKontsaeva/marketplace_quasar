@@ -71,7 +71,6 @@ export default defineComponent({
     background-image: url(../assets/img/Appledev.webp);
     background-repeat: no-repeat;
   }
-
 @media (max-width: 768px) {
   .main-title {
     font-size: 28px;

@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex flex-center q-px-lg q-pt-md q-mb-md">
-    <h3>Магазин электронной техники фирмы Apple</h3>
+    <h3 class="main-title">Магазин электронной техники фирмы Apple</h3>
     <div class="q-pa-md">
     <div class="q-gutter-md">
       <q-carousel
@@ -71,5 +71,13 @@ export default defineComponent({
     background-image: url(../assets/img/Appledev.webp);
     background-repeat: no-repeat;
   }
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 28px;
+    line-height: 1.2;
+    text-align: center;
+  }
+}
+  
 
 </style>

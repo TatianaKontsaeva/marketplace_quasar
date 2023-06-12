@@ -1,5 +1,5 @@
 <template>
-  <h2 class="flex justify-center q-pa-md">Корзина</h2>
+   <h2 class="flex justify-center q-pa-md">Корзина</h2>
   <q-page class="flex justify-center">
     <div v-if="!products.length" class="text-h4 q-pa-md">В корзине пока ничего нет... </div>
     <div v-else>
@@ -62,12 +62,25 @@
       />
       <q-toggle v-model="accept" label="Я принимаю условия" />
       <div>
-        <q-btn label="Оплатить" type="submit" class="btn_for_pay"/>
+        <q-btn label="Оплатить" type="submit" class="btn_for_pay" @click="alert = true"/>
         <q-btn label="Reset" type="reset" color="dark" flat class="q-ml-sm" />
       </div>
     </q-form>
   </div>
 </q-dialog>
+<q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Внимание</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+         Ваша заявка принята! С вами свяжутся в ближайшее время!
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 </template>
 <script>
 import CartItem from "src/components/CartItem.vue";
@@ -115,6 +128,7 @@ export default {
       products,
       btnName,
       dialog: ref(false),
+      alert: ref(false),
       userName,
       cc,
       exp_date,

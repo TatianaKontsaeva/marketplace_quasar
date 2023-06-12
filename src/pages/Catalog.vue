@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex">
+   <q-page class="flex">
       <div class="q-pa-lg">
         <div class="flex justify-between">
           <div class="contents">
@@ -11,10 +11,6 @@
           <q-icon name="shopping_basket" size="md" color="primary"/>
           {{ cart.length }}
         </q-item>
-        <q-item-section>
-          <div v-if="totalPrice>0"> Общая стоимость: {{ totalPrice }} </div>
-          </q-item-section>
-       
       </div>
       </div>
         <div class="items-center">
@@ -22,7 +18,7 @@
         @keyup.enter="searchRequest"
         standard
         bottom-slots
-        v-model="dataSearch"
+        v-model="productSearch"
         label="Поиск по товарам"
       >
         <q-icon
@@ -88,7 +84,7 @@ export default defineComponent({
     const cart = computed(() => store.cart ?? []);
     const products = computed(() => store.products ?? []);
     const btnName = "В корзину";
-    const dataSearch = ref(null);
+    const productSearch = ref(null);
 
     const addToCart = (id) => {
       store.addToCart(id);
@@ -96,7 +92,8 @@ export default defineComponent({
     let totalPrice = computed(() =>
       store.cart?.reduce((acc, product) => acc + product.price, 0)
     );
-    
+   
+    //поиск
     const showNotif = () => {
       $q.notify({
         type: "warning",
@@ -105,20 +102,22 @@ export default defineComponent({
     };
     const searchRequest = () => {
       const { result, loading } = useQuery(queries.searchData, {
-        like: `%${dataSearch.value}%`,
+        like: `%${productSearch.value}%`,
       });
       const getAll = computed(() => result.value?.product ?? []);
-      store.items = getAll;
+      store.products = getAll;
       setTimeout(() => {
         if (!store.products.length) {
           const { result } = useQuery(queries.getAll);
           store.products = computed(() => result.value?.product ?? []);
+
           showNotif();
         }
       }, 500);
-      dataSearch.value = "";
+      productSearch.value = "";
     };
 
+    //сортировка
     const sortByType = () => {
       if (store.types.length) {
         const { result } = useQuery(queries.sort, {
@@ -143,16 +142,17 @@ export default defineComponent({
       const { result } = useQuery(queries.sortByPrice);
       store.products = computed(() => result.value?.product ?? []);
     };
+    //-------
     onMounted(() => {
       store.isCatalog = true;
     });
-   
+
     return {
       products,
       sortByType,
       sortByPrice,
       addToCart,
-      dataSearch,
+      productSearch,
       searchRequest,
       showNotif,
       btnName,

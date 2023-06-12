@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lhh LpR lFf" >
+   <q-layout view="lhh LpR lFf" >
     <q-header elevated class="bg-gradient flex justify-between q-pt-md q-mb-md">
       <div>
       <q-toolbar>

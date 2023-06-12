@@ -4,37 +4,26 @@ import apolloClient from "../apollo/client.js";
 
 provideApolloClient(apolloClient);
 
-export const useStore = defineStore("filter", {
+export const useStore = defineStore("store", {
   state: () => ({
     products: null,
     cart: [],
     types: [],
     allTypes: [],
     isCatalog: false,
-    total: 0,
-    quantityProductsCart: 0,
   }),
   getters: {},
   actions: {
     addToCart(id) {
       this.products.forEach((elem) => {
-        if (elem.id == id)  {
+        if (elem.id == id) {
           if (!this.cart.includes(elem)) {
             this.cart.push(elem);
           } else if (this.cart.includes(elem)) {
             this.cart.push(elem);
-          
           }
         }
       });
-    },
-    INCREMENT(product) {
-      quantityProd.value++;
-      this.totalPrice += product.price;
-    },
-    DECREMENT(product) {
-      quantityProd.value--;
-      this.totalPrice -= product.price;
     },
     removeFromCart(id) {
       this.cart = this.cart.filter((el) => el.id != id);
@@ -45,14 +34,7 @@ export const useStore = defineStore("filter", {
   },
   mutations: {
     INCREMENT: (state, index) => {
-      state.cart[index].quantity++
+      state.cart[index].quantity++;
     },
-    DECREMENT: (state, index) => {
-      if (state.cart[index].quantity >= 1) {
-        state.cart[index].quantity--;
-    } 
-    },
-    
-
-  }
+  },
 });
